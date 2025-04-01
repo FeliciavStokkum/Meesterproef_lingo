@@ -1,0 +1,49 @@
+Pseudocode voor het spel
+
+Start spel
+
+Vorm 2 teams en geef namen
+Stel ronde-teller in op 1
+Start een nieuwe ronde
+
+Selecteer willekeurig een woord
+Toon de eerste letter van het woord
+Team A begint met raden
+Woord raden
+
+Team heeft maximaal 5 pogingen
+Speler voert een woord in
+Controleer of het woord correct is
+Als correct:
+Team mag in de ballenbak grabbelen
+Als fout:
+Toon feedback (groen/geel)
+Controleer of het aantal pogingen op is
+Zo ja:
+Controleer of het team 3 fouten op rij heeft
+Zo ja: Team verliest
+Zo nee: Wissel team
+Zo nee: Ga verder met raden
+Wisselen van team
+
+Als het huidige team Team A is → Team B is nu aan de beurt
+Anders → Team A is nu aan de beurt
+Verhoog de ronde-teller
+Ga terug naar het woord raden
+Ballenbak (bij een goed geraden woord)
+
+Trek 2 ballen uit de ballenbak
+Controleer of de eerste bal rood is
+Zo ja: Geen tweede bal trekken
+Zo nee: Trek een tweede bal
+Verwerk de ballen
+Controleer of het team 3 rode ballen heeft
+Zo ja: Team verliest
+Zo nee: Controleer of het team heeft gewonnen
+Zo ja: Team wint
+Zo nee: Ga terug naar de volgende ronde
+Einde van het spel
+
+Vraag of de spelers nog een keer willen spelen
+Zo ja: Start opnieuw
+Zo nee: Einde spel
