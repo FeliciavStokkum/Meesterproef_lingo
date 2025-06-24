@@ -19,11 +19,10 @@ def maak_bingo_kaart(soort):
         kaart.append(rij)
     return kaart
 
-# def print_bingo_kaart(kaart, team):
-#     print(f"\nBingo Kaart voor {team}:")
-#     for rij in kaart:
-#         print(" | ".join(f"{str(v):>2}" for v in rij))
-#     print("-" * 20)
+def print_bingo_kaart(kaart, team):
+    print("\nBingo Kaart voor", team + ":")
+    for rij in kaart:
+        print(rij)
 
 # def markeer_bingo_kaart(kaart, nummer):
 #     for i in range(4):
