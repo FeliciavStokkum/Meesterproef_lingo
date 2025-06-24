@@ -1,184 +1,210 @@
+# === Imports ===
 import random
-from lingowords import words 
+from lingowords import words
 from colorama import Fore
 
-print("Lingo is begonnen")
-team_1 = input("team 1, Voer een naam in: ")
-team_2 = input("team 2, Voer een naam in: ")
+# === Bingo kaart genereren ===
+def maak_bingo_kaart(soort):
+    kaart = []  # Lege bingo kaart
 
-ronde_teller = 0 
-pogingen = 0        
+    # Kies 16 willekeurige even of oneven getallen
+    if soort == "even":
+        getallen = random.sample(range(2, 100, 2), 16)
+    elif soort == "oneven":
+        getallen = random.sample(range(1, 100, 2), 16)
 
-even_nummers = [i for i in range(2, 33, 2)]  
-oneven_nummers = [i for i in range(1, 32, 2)]  
+    # Verdeel de getallen over 4 rijen
+    for i in range(0, 16, 4):
+        rij = getallen[i:i+4]
+        kaart.append(rij)
 
-random.shuffle(even_nummers)
-random.shuffle(oneven_nummers)
-
-def maak_bingo_kaart(nummers):
-    kaart = [nummers[i:i+4] for i in range(0, 16, 4)]
     return kaart
 
-bingo_kaart_team1 = maak_bingo_kaart(even_nummers[:16])  
-bingo_kaart_team2 = maak_bingo_kaart(oneven_nummers[:16])  
-
 def print_bingo_kaart(kaart, team):
-    print(f"\n🎉 Bingo Kaart voor {team}:")
+    print(f"\nBingo Kaart voor {team}:")
     for rij in kaart:
-        print(" | ".join(f"{n:2}" for n in rij))
+        print(" | ".join(f"{str(v):>2}" for v in rij))
     print("-" * 20)
 
-print_bingo_kaart(bingo_kaart_team1, "Team 1 (Even)")
-print_bingo_kaart(bingo_kaart_team2, "Team 2 (Oneven)")
+def markeer_bingo_kaart(kaart, nummer):
+    for i in range(4):
+        for j in range(4):
+            if kaart[i][j] == nummer:
+                kaart[i][j] = "X"
 
+def check_bingo(kaart):
+    # Horizontaal
+    for rij in kaart:
+        if all(v == "X" for v in rij):
+            return True
+    # Verticaal
+    for col in range(4):
+        if all(kaart[row][col] == "X" for row in range(4)):
+            return True
+    # Diagonaal
+    if all(kaart[i][i] == "X" for i in range(4)) or all(kaart[i][3 - i] == "X" for i in range(4)):
+        return True
+    return False
 
+# === Woord kiezen en raden ===
+def kies_woord():
+    return random.choice(words)
 
+def woord_raden(woord):
+    lengte = len(woord)
+    poging = 0
+    hint = ["_"] * lengte
+    hint[0] = woord[0]
 
+    print(woord)
+    print("\nLingo Spel - Raad het woord!")
+    print(" ".join(hint))
 
+    while poging < 5:
+        gok = input(f"Poging {poging+1}/5: ").lower()
 
+        if len(gok) != lengte:
+            print(f"Het woord moet {lengte} letters lang zijn!")
+            continue
 
+        if gok == woord:
+            print(Fore.GREEN + "Gefeliciteerd! Je hebt het woord geraden!" + Fore.RESET)
+            return True
 
+        nieuwe_hint = []
+        for i in range(lengte):
+            if gok[i] == woord[i]:
+                hint[i] = gok[i]
+                nieuwe_hint.append(Fore.GREEN + gok[i] + Fore.RESET)
+            elif gok[i] in woord:
+                nieuwe_hint.append(Fore.YELLOW + gok[i] + Fore.RESET)
+            else:
+                nieuwe_hint.append(gok[i])
 
+        print(" ".join(nieuwe_hint))
+        poging += 1
 
+    print(f"Helaas, het woord was: {woord}")
+    return False
 
+# === Ballenbak mechanisme ===
+def grabbelen(team_naam, ballenbak):
+    ballen = []
+    for i in range(2):
+        if not ballenbak:
+            break
+        bal = random.choice(ballenbak)
+        ballenbak.remove(bal)
+        ballen.append(bal)
 
+        if bal == "rood":
+            print(f"{team_naam} heeft een {Fore.RED}RODE{Fore.RESET} bal getrokken!")
+            break  # Geen tweede bal als eerste rood
+        elif bal == "groen":
+            print(f"{team_naam} heeft een {Fore.GREEN}GROENE{Fore.RESET} bal getrokken!")
+        else:
+            print(f"{team_naam} trekt bal nummer {bal}")
 
+    return ballen
 
+# === Spel starten ===
+def start_spel():
+    print("Lingo is begonnen!")
+    team_1 = input("Team 1, voer een naam in: ")
+    team_2 = input("Team 2, voer een naam in: ")
 
+    while True:
+        kaart1 = maak_bingo_kaart("even")    # Team 1 krijgt even kaart
+        kaart2 = maak_bingo_kaart("oneven")  # Team 2 krijgt oneven kaart
 
+        print_bingo_kaart(kaart1, team_1)
+        print_bingo_kaart(kaart2, team_2)
 
-# # Bingo-kaart (4x4)
-# def maak_bingo_kaart():
-#     return [[0] * 4 for _ in range(4)]
+        score1 = score2 = fout1 = fout2 = rood1 = rood2 = groen1 = groen2 = 0
+        ballenbak = list(range(1, 33)) + ["groen"] * 3 + ["rood"] * 3
 
-# # Ballenbak met nummers (even = team 1, oneven = team 2) en speciale ballen
-# BALLENBAK = [i for i in range(1, 17)] + ["groen", "groen", "groen", "rood", "rood", "rood"]
+        while True:
+            # === Beurt Team 1 ===
+            print(f"\n {team_1} is aan de beurt!")
+            if woord_raden(kies_woord()):
+                score1 += 1
+                fout1 = 0
+                ballen = grabbelen(team_1, ballenbak)
 
-# # Functie om een willekeurig woord te kiezen uit de geïmporteerde lijst
-# def kies_woord():
-#     return random.choice(words)
+                gewijzigd = False
+                for bal in ballen:
+                    if isinstance(bal, int):
+                        markeer_bingo_kaart(kaart1, bal)
+                        gewijzigd = True
+                        if check_bingo(kaart1):
+                            print_bingo_kaart(kaart1, team_1)
+                            print(f"🏆 {team_1} wint met een bingo-lijn!")
+                            return
+                    elif bal == "rood":
+                        rood1 += 1
+                    elif bal == "groen":
+                        groen1 += 1
 
-# # Woordraden mechanisme
-# def woord_raden(woord):
-#     lengte = len(woord)
-#     poging = 0
-#     goed_geraden = False
-#     hint = ["_"] * lengte
-#     hint[0] = woord[0]  # Eerste letter tonen
+                if gewijzigd:
+                    print_bingo_kaart(kaart1, team_1)
 
-#     print(woord)
-#     print("\nLingo Spel - Raad het woord!")
-#     print(" ".join(hint))
+                if score1 >= 10:
+                    print(f" {team_1} wint met 10 juiste woorden!")
+                    return
+                if rood1 >= 3:
+                    print(f" {team_1} verliest met 3 rode ballen!")
+                    return
+                if groen1 >= 3:
+                    print(f" {team_1} wint met 3 groene ballen!")
+                    return
+            else:
+                fout1 += 1
+                if fout1 >= 3:
+                    print(f" {team_1} verliest met 3 foute woorden!")
+                    return
 
-#     while poging < 5:
-#         gok = input(f"Poging {poging+1}/5: ").lower()
+            # === Beurt Team 2 ===
+            print(f"\n {team_2} is aan de beurt!")
+            if woord_raden(kies_woord()):
+                score2 += 1
+                fout2 = 0
+                ballen = grabbelen(team_2, ballenbak)
 
-#         if len(gok) != lengte:
-#             print(f"Het woord moet {lengte} letters lang zijn!")
-#             continue
+                gewijzigd = False
+                for bal in ballen:
+                    if isinstance(bal, int):
+                        markeer_bingo_kaart(kaart2, bal)
+                        gewijzigd = True
+                        if check_bingo(kaart2):
+                            print_bingo_kaart(kaart2, team_2)
+                            print(f" {team_2} wint met een bingo-lijn!")
+                            return
+                    elif bal == "rood":
+                        rood2 += 1
+                    elif bal == "groen":
+                        groen2 += 1
 
-#         if gok == woord:
-#             print("Gefeliciteerd! Je hebt het woord geraden!")
-#             return True
-        
-#         # Update hint
-#         for i in range(lengte):
-#             if gok[i] == woord[i]:
-#                 hint[i] = f"\033[32m{gok[i]}\033[0m"  # Groen (juiste plek)
-#             elif gok[i] in woord:
-#                 hint[i] = f"\033[33m{gok[i]}\033[0m"  # Geel (verkeerde plek)
-#             else:
-#                 hint[i] = gok[i]  # Blijf wit
+                if gewijzigd:
+                    print_bingo_kaart(kaart2, team_2)
 
-#         print(" ".join(hint))
-#         poging += 1
+                if score2 >= 10:
+                    print(f" {team_2} wint met 10 juiste woorden!")
+                    return
+                if rood2 >= 3:
+                    print(f" {team_2} verliest met 3 rode ballen!")
+                    return
+                if groen2 >= 3:
+                    print(f" {team_2} wint met 3 groene ballen!")
+                    return
+            else:
+                fout2 += 1
+                if fout2 >= 3:
+                    print(f" {team_2} verliest met 3 foute woorden!")
+                    return
 
-#     print(f"Helaas, het woord was: {woord}")
-#     return False
+        opnieuw = input("Wil je opnieuw spelen? (ja/nee): ").lower()
+        if opnieuw != "ja":
+            break
 
-# # Ballenbak mechanisme
-# def grabbelen(team, ballenbak):
-#     ballen = []
-#     for _ in range(2):
-#         if not ballenbak:
-#             break
-#         bal = random.choice(ballenbak)
-#         ballenbak.remove(bal)
-#         ballen.append(bal)
-
-#         if bal == "rood":
-#             print(f"{team} heeft een \033[31mRODE\033[0m bal getrokken! ")
-#             return ballen
-#         elif bal == "groen":
-#             print(f"{team} heeft een \033[32mGROENE\033[0m bal getrokken! ")
-#         else:
-#             print(f"{team} trekt bal nummer {bal}")
-
-#     return ballen
-
-# # Spel starten
-# def start_spel():
-#     team1_score = 0
-#     team2_score = 0
-#     rode_ballen_team1 = 0
-#     rode_ballen_team2 = 0
-#     fout_count_team1 = 0
-#     fout_count_team2 = 0
-#     bingo_kaart_team1 = maak_bingo_kaart()
-#     bingo_kaart_team2 = maak_bingo_kaart()
-#     ballenbak = BALLENBAK.copy()
-    
-#     while True:
-#         for team in ["Team 1", "Team 2"]:
-#             print(f"\n{team} is aan de beurt!")
-
-#             woord = kies_woord()
-#             if woord_raden(woord):
-#                 if team == "Team 1":
-#                     team1_score += 1
-#                     fout_count_team1 = 0
-#                 else:
-#                     team2_score += 1
-#                     fout_count_team2 = 0
-                
-#                 ballen = grabbelen(team, ballenbak)
-
-#                 if "rood" in ballen:
-#                     if team == "Team 1":
-#                         rode_ballen_team1 += 1
-#                     else:
-#                         rode_ballen_team2 += 1
-
-#                 if team == "Team 1" and team1_score >= 10:
-#                     print(" Team 1 wint door 10 woorden goed te raden!")
-#                     return
-#                 if team == "Team 2" and team2_score >= 10:
-#                     print(" Team 2 wint door 10 woorden goed te raden!")
-#                     return
-
-#                 if rode_ballen_team1 >= 3:
-#                     print(" Team 1 heeft 3 rode ballen getrokken en verliest!")
-#                     return
-#                 if rode_ballen_team2 >= 3:
-#                     print(" Team 2 heeft 3 rode ballen getrokken en verliest!")
-#                     return
-
-#             else:
-#                 if team == "Team 1":
-#                     fout_count_team1 += 1
-#                 else:
-#                     fout_count_team2 += 1
-                
-#                 if fout_count_team1 >= 3:
-#                     print(" Team 1 heeft 3 woorden fout op rij en verliest!")
-#                     return
-#                 if fout_count_team2 >= 3:
-#                     print(" Team 2 heeft 3 woorden fout op rij en verliest!")
-#                     return
-
-#         opnieuw = input("Wil je opnieuw spelen? (ja/nee): ").lower()
-#         if opnieuw != "ja":
-#             break
-
-# # Start het spel
-# start_spel()
+# === Start het spel ===
+start_spel()
