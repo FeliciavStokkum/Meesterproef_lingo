@@ -57,10 +57,9 @@ def check_bingo(kaart):
 
     return False
 
-
-# # === Woord kiezen en raden ===
-# def kies_woord():
-#     return random.choice(words)
+#Woord kiezen en raden
+def kies_woord():
+    return random.choice(words)
 
 # def woord_raden(woord):
 #     lengte = len(woord)
