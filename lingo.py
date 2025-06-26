@@ -98,25 +98,25 @@ def woord_raden(woord):
     print(f"Helaas, het woord was: {woord}")
     return False
 
-# # === Ballenbak mechanisme ===
-# def grabbelen(team_naam, ballenbak):
-#     ballen = []
-#     for i in range(2):
-#         if not ballenbak:
-#             break
-#         bal = random.choice(ballenbak)
-#         ballenbak.remove(bal)
-#         ballen.append(bal)
+#Ballenbak mechanisme
+def grabbelen(team_naam, ballenbak):
+    ballen = []
+    for i in range(2):
+        if not ballenbak:
+            break
+        bal = random.choice(ballenbak)
+        ballenbak.remove(bal)
+        ballen.append(bal)
 
-#         if bal == "rood":
-#             print(f"{team_naam} heeft een {Fore.RED}RODE{Fore.RESET} bal getrokken!")
-#             break  # Geen tweede bal als eerste rood
-#         elif bal == "groen":
-#             print(f"{team_naam} heeft een {Fore.GREEN}GROENE{Fore.RESET} bal getrokken!")
-#         else:
-#             print(f"{team_naam} trekt bal nummer {bal}")
+        if bal == "rood":
+            print(f"{team_naam} heeft een {Fore.RED}RODE{Fore.RESET} bal getrokken!")
+            break  # Geen tweede bal als eerste rood
+        elif bal == "groen":
+            print(f"{team_naam} heeft een {Fore.GREEN}GROENE{Fore.RESET} bal getrokken!")
+        else:
+            print(f"{team_naam} trekt bal nummer {bal}")
 
-#     return ballen
+    return ballen
 
 # # === Spel starten ===
 # def start_spel():
