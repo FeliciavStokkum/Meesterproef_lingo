@@ -61,42 +61,42 @@ def check_bingo(kaart):
 def kies_woord():
     return random.choice(words)
 
-# def woord_raden(woord):
-#     lengte = len(woord)
-#     poging = 0
-#     hint = ["_"] * lengte
-#     hint[0] = woord[0]
+def woord_raden(woord):
+    lengte = len(woord)
+    poging = 0
+    hint = ["_"] * lengte
+    hint[0] = woord[0]
 
-#     print(woord)
-#     print("\nLingo Spel - Raad het woord!")
-#     print(" ".join(hint))
+    print(woord)
+    print("\nLingo Spel - Raad het woord!")
+    print(" ".join(hint))
 
-#     while poging < 5:
-#         gok = input(f"Poging {poging+1}/5: ").lower()
+    while poging < 5:
+        gok = input(f"Poging {poging+1}/5: ").lower()
 
-#         if len(gok) != lengte:
-#             print(f"Het woord moet {lengte} letters lang zijn!")
-#             continue
+        if len(gok) != lengte:
+            print(f"Het woord moet {lengte} letters lang zijn!")
+            continue
 
-#         if gok == woord:
-#             print(Fore.GREEN + "Gefeliciteerd! Je hebt het woord geraden!" + Fore.RESET)
-#             return True
+        if gok == woord:
+            print(Fore.GREEN + "Gefeliciteerd! Je hebt het woord geraden!" + Fore.RESET)
+            return True
 
-#         nieuwe_hint = []
-#         for i in range(lengte):
-#             if gok[i] == woord[i]:
-#                 hint[i] = gok[i]
-#                 nieuwe_hint.append(Fore.GREEN + gok[i] + Fore.RESET)
-#             elif gok[i] in woord:
-#                 nieuwe_hint.append(Fore.YELLOW + gok[i] + Fore.RESET)
-#             else:
-#                 nieuwe_hint.append(gok[i])
+        nieuwe_hint = []
+        for i in range(lengte):
+            if gok[i] == woord[i]:
+                hint[i] = gok[i]
+                nieuwe_hint.append(Fore.GREEN + gok[i] + Fore.RESET)
+            elif gok[i] in woord:
+                nieuwe_hint.append(Fore.YELLOW + gok[i] + Fore.RESET)
+            else:
+                nieuwe_hint.append(gok[i])
 
-#         print(" ".join(nieuwe_hint))
-#         poging += 1
+        print(" ".join(nieuwe_hint))
+        poging += 1
 
-#     print(f"Helaas, het woord was: {woord}")
-#     return False
+    print(f"Helaas, het woord was: {woord}")
+    return False
 
 # # === Ballenbak mechanisme ===
 # def grabbelen(team_naam, ballenbak):
