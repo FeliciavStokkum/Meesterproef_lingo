@@ -19,16 +19,19 @@ def maak_bingo_kaart(soort):
         kaart.append(rij)
     return kaart
 
+#Toon de bingokaart voor elk team
 def print_bingo_kaart(kaart, team):
     print("\nBingo Kaart voor", team + ":")
     for rij in kaart:
         print(rij)
 
-# def markeer_bingo_kaart(kaart, nummer):
-#     for i in range(4):
-#         for j in range(4):
-#             if kaart[i][j] == nummer:
-#                 kaart[i][j] = "X"
+#markeer de bingo kaart als het nummer correct is
+def markeer_bingo_kaart(kaart, nummer):
+    for rij in kaart:
+        for i in range(len(rij)):
+            if rij[i] == nummer:
+                rij[i] = Fore.MAGENTA + str(nummer) + Fore.RESET
+
 
 # def check_bingo(kaart):
 #     # Horizontaal
