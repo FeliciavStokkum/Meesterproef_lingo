@@ -217,5 +217,5 @@ def start_spel():
         if opnieuw != "ja":
             break
 
-# # === Start het spel ===
-# start_spel()
+#Start het spel
+start_spel()
