@@ -32,20 +32,31 @@ def markeer_bingo_kaart(kaart, nummer):
             if rij[i] == nummer:
                 rij[i] = Fore.MAGENTA + str(nummer) + Fore.RESET
 
+#check of de je bingo hebt
+def is_roze(waarde):
+    return isinstance(waarde, str) and waarde.startswith(Fore.MAGENTA)
 
-# def check_bingo(kaart):
-#     # Horizontaal
-#     for rij in kaart:
-#         if all(v == "X" for v in rij):
-#             return True
-#     # Verticaal
-#     for col in range(4):
-#         if all(kaart[row][col] == "X" for row in range(4)):
-#             return True
-#     # Diagonaal
-#     if all(kaart[i][i] == "X" for i in range(4)) or all(kaart[i][3 - i] == "X" for i in range(4)):
-#         return True
-#     return False
+def check_bingo(kaart):
+    # Horizontaal
+    for rij in kaart:
+        if all(is_roze(v) for v in rij):
+            return True
+
+    # Verticaal
+    for kolom in range(4):
+        if all(is_roze(kaart[rij][kolom]) for rij in range(4)):
+            return True
+
+    # Diagonaal ↘
+    if all(is_roze(kaart[i][i]) for i in range(4)):
+        return True
+
+    # Diagonaal ↙
+    if all(is_roze(kaart[i][3 - i]) for i in range(4)):
+        return True
+
+    return False
+
 
 # # === Woord kiezen en raden ===
 # def kies_woord():
