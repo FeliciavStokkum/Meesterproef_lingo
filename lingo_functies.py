@@ -122,13 +122,14 @@ def grabbelen(team_naam, ballenbak):
 
 # === Spel starten ===
 def start_spel():
+    from colorama import Fore
     print("Lingo is begonnen!")
     team_1 = input("Team 1, voer een naam in: ")
     team_2 = input("Team 2, voer een naam in: ")
 
     while True:
-        kaart1 = maak_bingo_kaart("even")    # Team 1 krijgt even kaart
-        kaart2 = maak_bingo_kaart("oneven")  # Team 2 krijgt oneven kaart
+        kaart1 = maak_bingo_kaart("even")
+        kaart2 = maak_bingo_kaart("oneven")
 
         print_bingo_kaart(kaart1, team_1)
         print_bingo_kaart(kaart2, team_2)
@@ -137,7 +138,7 @@ def start_spel():
         ballenbak = list(range(1, 33)) + ["groen"] * 3 + ["rood"] * 3
 
         while True:
-            # === Beurt Team 1 ===
+            # === Team 1 ===
             print(f"\n {team_1} is aan de beurt!")
             if woord_raden(kies_woord()):
                 score1 += 1
@@ -162,21 +163,21 @@ def start_spel():
                     print_bingo_kaart(kaart1, team_1)
 
                 if score1 >= 10:
-                    print(f" {team_1} wint met 10 juiste woorden!")
+                    print(f"{team_1} wint met 10 juiste woorden!")
                     return
                 if rood1 >= 3:
-                    print(f" {team_1} verliest met 3 rode ballen!")
+                    print(f"{team_1} verliest met 3 rode ballen!")
                     return
                 if groen1 >= 3:
-                    print(f" {team_1} wint met 3 groene ballen!")
+                    print(f"{team_1} wint met 3 groene ballen!")
                     return
             else:
                 fout1 += 1
                 if fout1 >= 3:
-                    print(f" {team_1} verliest met 3 foute woorden!")
+                    print(f"{team_1} verliest met 3 foute woorden!")
                     return
 
-            # === Beurt Team 2 ===
+            # === Team 2 ===
             print(f"\n {team_2} is aan de beurt!")
             if woord_raden(kies_woord()):
                 score2 += 1
@@ -190,7 +191,7 @@ def start_spel():
                         gewijzigd = True
                         if check_bingo(kaart2):
                             print_bingo_kaart(kaart2, team_2)
-                            print(f" {team_2} wint met een bingo-lijn!")
+                            print(f"{team_2} wint met een bingo-lijn!")
                             return
                     elif bal == "rood":
                         rood2 += 1
@@ -201,23 +202,20 @@ def start_spel():
                     print_bingo_kaart(kaart2, team_2)
 
                 if score2 >= 10:
-                    print(f" {team_2} wint met 10 juiste woorden!")
+                    print(f"{team_2} wint met 10 juiste woorden!")
                     return
                 if rood2 >= 3:
-                    print(f" {team_2} verliest met 3 rode ballen!")
+                    print(f"{team_2} verliest met 3 rode ballen!")
                     return
                 if groen2 >= 3:
-                    print(f" {team_2} wint met 3 groene ballen!")
+                    print(f"{team_2} wint met 3 groene ballen!")
                     return
             else:
                 fout2 += 1
                 if fout2 >= 3:
-                    print(f" {team_2} verliest met 3 foute woorden!")
+                    print(f"{team_2} verliest met 3 foute woorden!")
                     return
 
         opnieuw = input("Wil je opnieuw spelen? (ja/nee): ").lower()
         if opnieuw != "ja":
             break
-
-#Start het spel
-start_spel()
