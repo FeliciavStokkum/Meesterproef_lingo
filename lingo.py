@@ -1,7 +1,8 @@
 # === Imports ===
 import random
 from lingowords import words
-from colorama import Fore
+from colorama import Fore, Style, init
+init(autoreset=True)
 
 # === Bingo kaart genereren ===
 def maak_bingo_kaart(soort):
@@ -23,7 +24,8 @@ def maak_bingo_kaart(soort):
 def print_bingo_kaart(kaart, team):
     print("\nBingo Kaart voor", team + ":")
     for rij in kaart:
-        print(rij)
+        print("\t".join(str(getal) for getal in rij))
+
 
 #markeer de bingo kaart als het nummer correct is
 def markeer_bingo_kaart(kaart, nummer):
