@@ -61,17 +61,17 @@ def test_check_bingo_verticaal():
 
 
 def test_check_bingo_diagonaal_links_naar_rechts():
-    print("🔹 Test: check_bingo diagonaal ↘")
+    print("🔹 Test: check_bingo diagonaal")
     kaart = [[Fore.MAGENTA + 'x' + Fore.RESET if i == j else 0 for j in range(4)] for i in range(4)]
     assert check_bingo(kaart)
-    print("✅ Test geslaagd: diagonale ↘ bingo gedetecteerd.\n")
+    print("✅ Test geslaagd: diagonale bingo gedetecteerd.\n")
 
 
 def test_check_bingo_diagonaal_rechts_naar_links():
-    print("🔹 Test: check_bingo diagonaal ↙")
+    print("🔹 Test: check_bingo diagonaal")
     kaart = [[Fore.MAGENTA + 'x' + Fore.RESET if j == 3 - i else 0 for j in range(4)] for i in range(4)]
     assert check_bingo(kaart)
-    print("✅ Test geslaagd: diagonale ↙ bingo gedetecteerd.\n")
+    print("✅ Test geslaagd: diagonale bingo gedetecteerd.\n")
 
 
 def test_grabbelen_geeft_ballen():
