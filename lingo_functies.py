@@ -49,11 +49,11 @@ def check_bingo(kaart):
         if all(is_roze(kaart[rij][kolom]) for rij in range(4)):
             return True
 
-    # Diagonaal ↘
+    # Diagonaal 
     if all(is_roze(kaart[i][i]) for i in range(4)):
         return True
 
-    # Diagonaal ↙
+    # Diagonaal 
     if all(is_roze(kaart[i][3 - i]) for i in range(4)):
         return True
 
